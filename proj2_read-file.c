@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 int main(void)
@@ -33,10 +34,25 @@ int main(void)
   }
   printf("read() successful\n");
   
+  /* // check readBuffer
+  for (int i=0; i<=strlen(readBuffer); i++)
+    printf("%d ", readBuffer[i]);
+  printf("\n");
+  */
+
+  // add null-terminator character
+  readBuffer[strlen(readBuffer)-1] = '\0';
+
+  /* // check readBuffer after appending null-terminator
+  for (int i=0; i<=strlen(readBuffer); i++)
+    printf("%d ", readBuffer[i]);
+  printf("\n");
+  */
+
   // print out contents
-  printf("Contents read from \"%s\": \n", filename);
-  printf("%s\n", readBuffer);
+  printf("Contents read from \"%s\":\n%s\n", filename, readBuffer);
 
   close(fd);
+  free(readBuffer);
   return 0;
 }
