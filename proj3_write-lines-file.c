@@ -19,7 +19,7 @@ int main(void)
   printf("\n");
   
   // open file & check for errors
-  int fd = open(filename, O_WRONLY, 0200);
+  int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
   if (fd == -1) {
     printf("open() failed on \"%s\"\n", filename);
     exit(1);
