@@ -10,7 +10,7 @@ char* extractdir(char* str, int maxlen);
 int main(void)
 {
   char* paths[3] = {
-    "/home/me/user/tem/a",
+    "/home/me/user/temp/a",
     "/home/me/user/temp/b",
     "/home/me/user/temp/c/d"
   };
@@ -43,8 +43,16 @@ char* extractdir(char* str, int strlen)
   while (str[strlen-1] != '/') {
     strlen--;
   };
-  char* tree = NULL;
+
+  char* tree = malloc(strlen);
+  if (tree == NULL) {
+    printf("malloc() failed");
+    exit(1);
+  }
+
   strncat(tree, str, strlen -1);
+  tree[strlen] = '\0';
+  
   return tree;
 }
 
