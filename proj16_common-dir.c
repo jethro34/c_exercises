@@ -1,36 +1,50 @@
 // ex.16 get common directory
 
-#define _POSIX_C_SOURCE 200809L
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+int commonchars(char** str_arr, int arr_len);
+char* extractdir(char* str, int maxlen);
+
 int main(void)
 {
   char* paths[3] = {
-    "/home/me/user/temp/a",
+    "/home/me/user/tem/a",
     "/home/me/user/temp/b",
     "/home/me/user/temp/c/d"
   };
-  char* marker[3] = { NULL, NULL, NULL };
-  char* tempdirPtr = NULL;
-  char* tempdirPtr2 = NULL;
-  char commonpath[1024] = "/";
-  int first = 1;
+  
+  char* tree = extractdir(paths[0], commonchars(paths, 3));
+  printf("common tree: \"%s\"\n", tree);
 
-  for (;;) {
-    tempdirPtr = strtok_r((first ? paths[0] : NULL), "/", &marker[0]); 
-    for (int i=1; i<3; i++) {
-      tempdirPtr2 = strtok_r((first ? paths[i] : NULL), "/", &marker[i]);
-      if (strcmp(tempdirPtr, tempdirPtr2) != 0) {
-        printf("common tree is: \"%s\"\n", commonpath);
-        return 0;
-      }
+  return 0;
+}
+
+int commonchars(char** str_arr, int arr_len)
+// return number of common characters in a string array
+{
+  int pos = 0;
+  int strlen0 = strlen(str_arr[0]);
+  while (pos < strlen0) {
+    char ch = str_arr[0][pos];
+    for (int i=1; i<arr_len; i++) {
+      if ((pos >= strlen(str_arr[i])) || (ch != str_arr[i][pos])) 
+        return pos--;
     }
-    strcat(commonpath, "/");
-    strcat(commonpath, tempdirPtr);
-    first = 0;
+    pos++;
   }
   return 0;
 }
+
+char* extractdir(char* str, int strlen)
+// shorten a string to a directory
+{
+  while (str[strlen-1] != '/') {
+    strlen--;
+  };
+  char* tree = NULL;
+  strncat(tree, str, strlen -1);
+  return tree;
+}
+
