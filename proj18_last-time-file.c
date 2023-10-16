@@ -11,7 +11,7 @@
 
 char* getfname(void);
 
-int main(void)
+int main(int argc, char* argv[])
 {
   char current_dir[] = ".";
 
@@ -20,8 +20,12 @@ int main(void)
 
   struct dirent* dir_entry;
   time_t lasttime;
-
-  char* filename = getfname();
+  
+  char* filename = NULL;
+  if ((argc == 1) || ((argc == 2) && (*argv[1] == '-'))) 
+    filename = getfname();
+  else
+    filename = argv[1];
 
   while ((dir_entry = readdir(cdPtr)) != NULL) {
     if (strcmp(dir_entry->d_name, filename) == 0) {  
@@ -33,7 +37,8 @@ int main(void)
     }
   }
   closedir(cdPtr);
-  free(filename);
+  if ((argc == 1) || ((argc == 2) && (*argv[1] == '-'))) 
+    free(filename);
   return 0;
 }
 
